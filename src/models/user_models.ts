@@ -13,4 +13,6 @@ const UserSchema = new Schema({
         type: String,
         required: false
     }
-})
+});
+
+export default model('User', UserSchema);

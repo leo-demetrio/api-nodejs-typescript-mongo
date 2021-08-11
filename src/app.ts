@@ -1,18 +1,20 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
-require('dotenv')
+import userRouter from './routes/userRoutes';
+// require('dotenv')
 
 export class App {
     private express: express.Application;
-    private port = 9000;
+    private port = 3000;
     private connection = process.env.CONNECTION;
 
     constructor(){
-        this.express = express();
-        this.listen();
+        this.express = express();       
         this.middlewares();
         this.database();
+        this.routes();
+        this.listen();
     }
     public getApp(): express.Application {
         return this.express;
@@ -22,6 +24,8 @@ export class App {
         this.express.use(express.json());
         this.express.use(cors());
     }
+
+   
     private listen(): void {
         this.express.listen(this.port, () => {
             console.log('Server running...' + this.port);
@@ -36,5 +40,8 @@ export class App {
          }
             
         );
+    }
+    private routes(): void {
+        this.express.use('/v1/usuarios', userRouter);
     }
 }

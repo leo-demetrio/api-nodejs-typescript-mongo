@@ -2,11 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import userRouter from './routes/userRoutes';
-// require('dotenv')
+import 'dotenv/config';
 
 export class App {
     private express: express.Application;
-    private port = 3000;
+    private port = 9000;
     private connection = process.env.CONNECTION;
 
     constructor(){
@@ -33,7 +33,7 @@ export class App {
     }
 
     private database(): void {
-        mongoose.connect('mongodb+srv://user_admin:20202020@cluster0.ocmtm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+        mongoose.connect(this.connection,
         { 
             useUnifiedTopology: true,
             useNewUrlParser: true

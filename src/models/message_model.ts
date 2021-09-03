@@ -1,7 +1,10 @@
-import { Schema, model  } from "mongoose";
+import { Schema, model, Model, DocumentQuery  } from "mongoose";
 import { MessageInterface } from "../interfaces/messagesInterface";
 
 interface MessageModel extends MessageInterface, Document {}
+interface MessageStatic extends Model<MessageModel> {
+    searchMessagesChat(idUserLoged: string, idUserChat: string): DocumentQuery<MessageModel[], any>;
+}
 
 const MessageSchema = new Schema({
     text: {
@@ -24,4 +27,13 @@ const MessageSchema = new Schema({
     }
 });
 
-export default model<MessageModel>('Message', MessageSchema);
+MessageSchema.statics.searchMessagesChat = function(idUserLoged: string, idUserChat: string): DocumentQuery<MessageModel[], MessageModel> {
+    return this.find({
+        $or: [
+            { $and: [{sender: idUserLoged}, { recipient: idUserChat }]},
+            { $and: [{sender: idUserChat}, { recipient: idUserLoged }]}
+        ]
+    })
+}
+
+export default model<MessageModel, MessageStatic>('Message', MessageSchema);

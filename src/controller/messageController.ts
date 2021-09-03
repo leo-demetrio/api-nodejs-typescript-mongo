@@ -19,14 +19,17 @@ class MessageController {
         try{
             const idUserLoged = req.user._id; 
             const idUserChat = req.userChat._id; 
+            const messages = await message_model.searchMessagesChat(idUserLoged, idUserChat)
+            .sort('createdAt');
 
-            const messages = await message_model.find({
-                $or: [
-                    { $and: [{sender: idUserLoged}, { recipient: idUserChat }]},
-                    { $and: [{sender: idUserChat}, { recipient: idUserLoged }]}
-                ]
-            });
-            return res.json(messages);
+            const messageChat = messages.map(message => {
+                return {
+                    text: message.text,
+                    createdAt: message.createdAt,
+                    isSender: message.sender == String(idUserLoged)
+                }
+            })
+            return res.json(messageChat);
             
           
         }catch(e) {

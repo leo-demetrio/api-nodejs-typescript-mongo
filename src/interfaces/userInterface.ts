@@ -4,3 +4,8 @@ export interface UserInterface {
     password?: string,
     avatar: string
 }
+
+export interface MessageUserInterface extends UserInterface {
+    lastMessage: string;
+    dateLastMessage: string;
+}

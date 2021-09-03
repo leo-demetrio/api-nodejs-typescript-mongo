@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { NextFunction } from "express-serve-static-core";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import 'dotenv/config';
 import user_model from "../models/user_model";
 import { UserInterface } from "../interfaces/userInterface";
@@ -40,7 +40,7 @@ class AuthMiddleware {
         if (!user) return res.status(401).send({message: "Not authorization"});
             
         req.userChat = user;
-
+            
         return next();
 
         }catch (e) {

@@ -5,6 +5,7 @@ const userRouter = Router();
 
 userRouter.post('/cadastro', userController.reg);
 userRouter.get('/',userController.list);
+userRouter.post('/autenticate',userController.autenticate);
 
 
 export default userRouter;

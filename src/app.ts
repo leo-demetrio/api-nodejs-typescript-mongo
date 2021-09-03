@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import userRouter from './routes/userRoutes';
+import userRouter from './routes/userRoute';
+import messageRouter from './routes/messageRoute';
 import 'dotenv/config';
 
 export class App {
@@ -28,7 +29,9 @@ export class App {
    
     private listen(): void {
         this.express.listen(this.port, () => {
-            console.log('Server running...' + this.port);
+            console.log('Route test GET /v1/usuarios');
+            console.log('http://localhost:' + this.port + ' /v1/usuarios');
+            console.log('http://localhost:' + this.port + ' /v1/messages');
         });
     }
 
@@ -37,11 +40,12 @@ export class App {
         { 
             useUnifiedTopology: true,
             useNewUrlParser: true
-         }
+        }
             
         );
     }
     private routes(): void {
         this.express.use('/v1/usuarios', userRouter);
+        this.express.use('/v1/messages', messageRouter);
     }
 }

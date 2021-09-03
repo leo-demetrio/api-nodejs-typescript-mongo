@@ -1,4 +1,7 @@
 import { Schema, model  } from "mongoose";
+import { MessageInterface } from "../interfaces/messagesInterface";
+
+interface MessageModel extends MessageInterface, Document {}
 
 const MessageSchema = new Schema({
     text: {
@@ -21,4 +24,4 @@ const MessageSchema = new Schema({
     }
 });
 
-export default model('Message', MessageSchema);
+export default model<MessageModel>('Message', MessageSchema);

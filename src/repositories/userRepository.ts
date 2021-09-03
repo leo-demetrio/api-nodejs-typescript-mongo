@@ -1,14 +1,19 @@
-import user_models from "../models/user_models";
+import user_models from "../models/user_model";
+import bcrypt from "bcrypt";
+
+
 
 class UserRepository {
-    private userModel;
+    private userModel: any;
+    private secretJwt: any = process.env.SECRET_JWT;
 
     constructor(user_models) {
-        this.userModel = user_models;
+        this.userModel = new user_models();
+
     }
     public async createUser(body) {
         try{
-            const user = await this.userModel.create(body);
+            const user = await user_models.create(body);
             return user;
         }catch(e){
             console.log("Erro na classe UserRepositoy" + e)
@@ -23,6 +28,24 @@ class UserRepository {
             return allUser;
         }catch(e){
             console.log(e)
+        }
+     
+    }
+    public async autenticateUser(body: any) {
+        const { name, password } = body;
+        
+        try{     
+            const user = await user_models.findOne({ name });
+            if(!user) return false;                      
+            const passwordUser = await user.comparePassword(password);           
+            if(!passwordUser) return false;
+            const token = user.createToken();           
+            return {
+                token, user
+            } ;
+        }catch(e){
+            console.log(e)
+            return false;
         }
      
     }
